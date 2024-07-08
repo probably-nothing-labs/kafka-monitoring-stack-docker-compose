@@ -15,6 +15,7 @@
 version: "3.8"
 services:
   grafana:
+    # Username: admin, pwd: kafka
     image: "grafana/grafana:${GRAFANA_VERSION}"
     ports:
       - "3000:3000"
@@ -42,12 +43,15 @@ services:
       - kafka-platform
 
   jmx-kafka101:
-    image: "sscaling/jmx-prometheus-exporter"
+    image: "bitnami/jmx-exporter"
+    # image: "sscaling/jmx-prometheus-exporter"
     ports:
       - "5556:5556"
+    command: ["5556", "/etc/jmx_exporter/config.yml"]
     environment:
       CONFIG_YML: "/etc/jmx_exporter/config.yml"
       JVM_OPTS: ${PROMETHEUS_JMX_AGENT_JVM_OPTS}
+      SERVICE_PORT: 5556
     volumes:
       - ./etc/jmx_exporter/config_kafka101.yml:/etc/jmx_exporter/config.yml
     container_name: jmx-kafka101
@@ -57,13 +61,15 @@ services:
       - kafka-platform
 
   jmx-kafka102:
-    image: "sscaling/jmx-prometheus-exporter"
+    image: "bitnami/jmx-exporter"
+    # image: "sscaling/jmx-prometheus-exporter"
     ports:
       - "5557:5556"
+    command: ["5556", "/etc/jmx_exporter/config.yml"]
     environment:
       CONFIG_YML: "/etc/jmx_exporter/config.yml"
       JVM_OPTS: ${PROMETHEUS_JMX_AGENT_JVM_OPTS}
-
+      SERVICE_PORT: 5556
     volumes:
       - ./etc/jmx_exporter/config_kafka102.yml:/etc/jmx_exporter/config.yml
     container_name: jmx-kafka102
@@ -73,12 +79,15 @@ services:
       - kafka-platform
 
   jmx-kafka103:
-    image: "sscaling/jmx-prometheus-exporter"
+    image: "bitnami/jmx-exporter"
+    # image: "sscaling/jmx-prometheus-exporter"
     ports:
       - "5558:5556"
+    command: ["5556", "/etc/jmx_exporter/config.yml"]
     environment:
       CONFIG_YML: "/etc/jmx_exporter/config.yml"
       JVM_OPTS: ${PROMETHEUS_JMX_AGENT_JVM_OPTS}
+      SERVICE_PORT: 5556
     volumes:
       - ./etc/jmx_exporter/config_kafka103.yml:/etc/jmx_exporter/config.yml
     container_name: jmx-kafka103
